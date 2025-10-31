@@ -1,4 +1,5 @@
 package eventManager;
+import java.util.ArrayList;
 
 import java.awt.event.*;
 import java.io.*;
@@ -28,7 +29,7 @@ public class UserCreatorGUI extends JFrame implements ActionListener
 	
 	public UserCreatorGUI()
 	{
-		// Settup initial window
+		// Setup initial window
 		window.setLayout(flowLayout);
 		
 		createAccountButton.addActionListener(this);
@@ -64,7 +65,7 @@ public class UserCreatorGUI extends JFrame implements ActionListener
 				
 			}
 			// Then check if username is taken
-			else if (checkUsernameConflict(nameText.getText()))
+			else if (UserAccount.checkUsernameConflict(nameText.getText()))
 			{
 				messageLabel.setText("Error, username already taken");
 				window.pack();
@@ -73,7 +74,7 @@ public class UserCreatorGUI extends JFrame implements ActionListener
 			else
 			{
 				messageLabel.setText("Creating account...");
-				UserAccount newAccount = new UserAccount(nameText.getText(), passwordText.getText(), generateUniqueId());
+				UserAccount newAccount = new UserAccount(nameText.getText(), passwordText.getText(), UserAccount.generateUniqueId());
 				newAccount.print();
 				
 				//TODO Add this to the account array and re-serialize
@@ -83,28 +84,7 @@ public class UserCreatorGUI extends JFrame implements ActionListener
 	}
 	
 	
-	public static boolean verifyValidPassword(String password)
-	{
-		return false;
-		// TODO develop method stub
-	}
-	
-	// Make sure username isn't already taken
-	// by scanning through user array
-	public static boolean checkUsernameConflict(String password)
-	{
-		return false;
-		// TODO develop method stub
-	}
-	
-	// Generate random number
-	// then check the user array to ensure it isnt already taken
-	// if it isnt return the int, otherwise try again
-	public static int generateUniqueId()
-	{
-		return 0;
-		// TODO develop method stub
-	}
+
 	
 	public static void main(String[] args)
 	{
