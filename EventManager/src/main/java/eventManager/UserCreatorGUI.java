@@ -57,7 +57,7 @@ public class UserCreatorGUI extends JFrame implements ActionListener
 			System.out.println("Button Pressed");
 			
 			// Makes sure name or password are not empty
-			if (nameText.getText().equals("") || passwordText.getText().equals(""))
+			if ( !(UserAccount.verifyValidUsername(nameText.getText()) && UserAccount.verifyValidPassword(passwordText.getText())))
 			{
 				// Show error for invalid username or password
 				messageLabel.setText("Error, username or password is invalid");
@@ -75,7 +75,18 @@ public class UserCreatorGUI extends JFrame implements ActionListener
 			{
 				messageLabel.setText("Creating account...");
 				UserAccount newAccount = new UserAccount(nameText.getText(), passwordText.getText(), UserAccount.generateUniqueId());
-				newAccount.print();
+				
+				newAccount.addUser();
+				
+
+				// For debugging, gets and prints out entire user list
+				ArrayList<UserAccount>userList = UserAccount.getUserList();
+				
+				for (UserAccount item : userList)
+				{
+					item.print();
+				}
+				
 				
 				//TODO Add this to the account array and re-serialize
 			}
@@ -83,11 +94,5 @@ public class UserCreatorGUI extends JFrame implements ActionListener
 		
 	}
 	
-	
 
-	
-	public static void main(String[] args)
-	{
-		new UserCreatorGUI();
-	}
 }

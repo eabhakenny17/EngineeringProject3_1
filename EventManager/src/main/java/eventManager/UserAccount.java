@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class UserAccount extends Account implements Serializable
 {
-	private static ArrayList<UserAccount> userList;
+	private static ArrayList<UserAccount> userList = new ArrayList<UserAccount>();
 	
 	
 	public UserAccount(String name, String password, int id) 
@@ -18,15 +18,31 @@ public class UserAccount extends Account implements Serializable
 	
 	public void print()
 	{
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println("Name: " + this.getName());
 		System.out.println("Password: " + this.getPassword());
 		System.out.println("ID: " +this.getId());
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	}
+	
+	public static boolean verifyValidUsername(String name)
+	{
+		// Check if name is valid
+		if (name.equals(""))
+		{
+			return false;
+		}
+		return true;
+		// TODO develop method stub
 	}
 	
 	public static boolean verifyValidPassword(String password)
 	{
-		return false;
-		// TODO develop method stub
+		if (password.equals(""))
+		{
+			return false;
+		}
+		return true;
 	}
 	
 	// Make sure username isn't already taken
@@ -47,11 +63,7 @@ public class UserAccount extends Account implements Serializable
 			
 		}
 		
-		if (uniqueName)
-		{
-			return true;
-		}
-		return false;
+		return !uniqueName;
 		
 	}
 	
@@ -83,13 +95,28 @@ public class UserAccount extends Account implements Serializable
 	}
 	
 	// Adds a user to the user lists
-	public static void addUser(UserAccount account)
+	public void addUser()
 	{
-		userList.add(account);
+		deSerialiseUserArray();
+		userList.add(this);
+		saveUsers();
 	}
 	
+	// Returns the user list
+	public static ArrayList<UserAccount> getUserList()
+	{
+		
+		deSerialiseUserArray();
+		return userList;
+	}
+	
+	public static void deleteUsers()
+	{
+		userList.clear();
+		saveUsers();
+	}
 	// Serialize the user list
-	public static void saveUsers()
+	private static void saveUsers()
 	{
 		// Serialize User object
 		try
@@ -112,14 +139,8 @@ public class UserAccount extends Account implements Serializable
 		}
 	}
 	
-	// Returns the user list
-	public static ArrayList<UserAccount> getUserList()
-	{
-		
-		deSerialiseUserArray();
-		return userList;
-	}
 	
+	// De-serialises user list
 	private static void deSerialiseUserArray()
 	{
 		try
@@ -129,14 +150,15 @@ public class UserAccount extends Account implements Serializable
 			System.out.println("Tring to deserialize");
 			FileInputStream fi = new FileInputStream("users.ser");
 			ObjectInputStream oi = new ObjectInputStream(fi);
-			
-			System.out.println("Objects Deserialized");
+
 			
 			ArrayList<UserAccount> newList = (ArrayList<UserAccount>)oi.readObject();
 			
 			userList = newList;
 			
 			oi.close();
+			
+			System.out.println("Objects Deserialized");
 		}
 		
 		catch(Exception e)
