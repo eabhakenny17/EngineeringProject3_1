@@ -13,7 +13,6 @@ public class UserAccount extends Account implements Serializable
 	public UserAccount(String name, String password, int id) 
 	{
 		super(name, password, id);
-
 	}
 	
 	public void print()
@@ -150,9 +149,9 @@ public class UserAccount extends Account implements Serializable
 			System.out.println("Tring to deserialize");
 			FileInputStream fi = new FileInputStream("users.ser");
 			ObjectInputStream oi = new ObjectInputStream(fi);
-
 			
 			ArrayList<UserAccount> newList = (ArrayList<UserAccount>)oi.readObject();
+			
 			
 			userList = newList;
 			
@@ -163,6 +162,7 @@ public class UserAccount extends Account implements Serializable
 		
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			System.out.println("No file, creating file");
 			
 			// Serialize User object
