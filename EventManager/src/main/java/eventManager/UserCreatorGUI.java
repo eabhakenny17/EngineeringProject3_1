@@ -23,7 +23,7 @@ public class UserCreatorGUI extends JFrame implements ActionListener
 	
 	private JLabel messageLabel = new JLabel("");
 	
-	JFrame window = new JFrame("Window");
+	JFrame window = new JFrame("Create Account");
 	
 	FlowLayout flowLayout = new FlowLayout();
 	
@@ -77,6 +77,8 @@ public class UserCreatorGUI extends JFrame implements ActionListener
 				UserAccount newAccount = new UserAccount(nameText.getText(), passwordText.getText(), UserAccount.generateUniqueId());
 				
 				newAccount.addUser();
+				
+				window.setVisible(false);
 				
 
 				// For debugging, gets and prints out entire user list

@@ -53,7 +53,7 @@ public class UserAccount extends Account implements Serializable
 		
 		boolean uniqueName = true;
 		
-		for (UserAccount account : userList)
+		for (UserAccount account : UserAccount.getUserList())
 		{
 			if(account.getName().equals(name))
 			{
