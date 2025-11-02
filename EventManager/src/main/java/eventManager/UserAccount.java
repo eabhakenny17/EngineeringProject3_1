@@ -141,6 +141,8 @@ public class UserAccount extends Account implements Serializable
 	
 	// De-serialises user list
 	private static void deSerialiseUserArray()
+
+	
 	{
 		try
 		{
@@ -176,5 +178,17 @@ public class UserAccount extends Account implements Serializable
 			}
 		}
 	}
-	
+
+	// Overiding equals method
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o instanceof UserAccount)
+		{
+			UserAccount other = (UserAccount)o;
+			
+			return this.getId() == other.getId();
+		}
+		return false;
+	}
 }
