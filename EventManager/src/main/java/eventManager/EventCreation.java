@@ -2,11 +2,16 @@ package eventManager;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.*;
 import javax.swing.*;
 
 public class EventCreation extends JFrame implements ActionListener {
 	private JButton createEventBtn = new JButton("Create an event.");
+	private JButton saveEventBtn = new JButton("Save event.");
 	private TextArea textArea = new TextArea("");
 	//first window
 	private JFrame startWindow = new JFrame();
@@ -24,13 +29,16 @@ public class EventCreation extends JFrame implements ActionListener {
 	
 	public void EventGUI() {
 		System.out.println("Calling GUI method from EventCreation");
-		startPanel.add(createEventBtn);
-		createEventBtn.addActionListener(this);
-		startWindow.getContentPane().add(startPanel);
-		startWindow.pack();
-		startWindow.setVisible(true);
+//		startPanel.add(createEventBtn);
+//		startPanel.setSize(400, 400);
+//		createEventBtn.addActionListener(this);
+//		startWindow.getContentPane().add(startPanel);
+//		startWindow.pack();
+//		startWindow.setVisible(true);
 		
-		GridLayout layout1 = new GridLayout(6,2); //three columns, two rows
+		eventCreationWindow.getContentPane().add(eventCreationPanel);
+		eventCreationPanel.setSize(400, 400);
+		GridLayout layout1 = new GridLayout(7,2);
 		eventCreationPanel.setLayout(layout1);
 		eventCreationPanel.add(eventNameLabel); eventCreationPanel.add(eventNameTextArea);
 		eventCreationPanel.add(venueLabel); eventCreationPanel.add(venueTextArea);
@@ -38,20 +46,38 @@ public class EventCreation extends JFrame implements ActionListener {
 		eventCreationPanel.add(attendanceLabel); eventCreationPanel.add(attendanceTextArea);
 		eventCreationPanel.add(budgetLabel); eventCreationPanel.add(budgetTextArea);
 		eventCreationPanel.add(notesLabel); eventCreationPanel.add(notesTextArea);
-		eventCreationWindow.getContentPane().add(eventCreationPanel);
+		eventCreationPanel.add(saveEventBtn);
+		saveEventBtn.addActionListener(this);
 		eventCreationWindow.pack();
-		eventCreationWindow.setVisible(false);
+		eventCreationWindow.setVisible(true);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//Scanner sc = new Scanner(System.in);
-		if(e.getSource().equals(createEventBtn)){
-			eventCreationWindow.setVisible(true);
-			startWindow.setVisible(false);
-			//eventNameTextArea.setText();
+		if(e.getSource().equals(saveEventBtn)) {
+	        if (eventNameTextArea.getText().isEmpty() || venueTextArea.getText().isEmpty() || maxAttendanceTextArea.getText().isEmpty() 
+	        		|| attendanceTextArea.getText().isEmpty() || budgetTextArea.getText().isEmpty()) {
+	                JOptionPane.showMessageDialog(eventCreationWindow, "Please fill in all fields before saving the event.", "Missing Information", JOptionPane.WARNING_MESSAGE);
+	                return; 
+	            }
+
+	            try {
+	                int maxAttendanceInt = Integer.parseInt(maxAttendanceTextArea.getText());
+	                int attendanceInt = Integer.parseInt(attendanceTextArea.getText());
+	                double budgetDouble = Double.parseDouble(budgetTextArea.getText());
+
+	                Event newEvent = new Event(eventNameTextArea.getText(), venueTextArea.getText(), maxAttendanceInt, attendanceInt, budgetDouble, notesTextArea.getText());
+
+	                EventManager.addEvent(newEvent);
+	                System.out.println("saving event...");
+	                eventCreationWindow.dispose();
+
+	            } catch (NumberFormatException ex) {
+	            	System.out.println("user inputted wrong data types #loser");
+	            }
+			eventCreationWindow.dispose();
 		}
 	}	
 }

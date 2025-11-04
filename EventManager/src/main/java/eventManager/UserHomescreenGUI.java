@@ -12,6 +12,7 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
     private DefaultListModel<String> listModel;
     private JList<String> eventList;
     private JButton viewDetailsButton;
+    private JButton createEventButton;
 
     public UserHomescreenGUI(UserAccount user) {
         this.user = user;
@@ -43,10 +44,20 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         eventList = new JList<>(listModel);
         JScrollPane scrollPane = new JScrollPane(eventList);
         add(scrollPane, BorderLayout.CENTER);
+        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
 
         viewDetailsButton = new JButton("View Details");
         viewDetailsButton.addActionListener(this);
+        buttonPanel.add(viewDetailsButton);
 
+        createEventButton = new JButton("Create Event");
+        createEventButton.addActionListener(this);
+        buttonPanel.add(createEventButton);
+
+        add(buttonPanel, BorderLayout.SOUTH);
+        
         setVisible(true);
     }
     
@@ -58,9 +69,13 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Please select a valid event!");
                 return;
             }
-
             Event selectedEvent = userEvents.get(index);
             showEventDetails(selectedEvent);
+        }
+        
+        if(e.getSource() == createEventButton) {
+        	EventCreation eventCreation = new EventCreation();
+			eventCreation.EventGUI();
         }
     }
 
@@ -78,7 +93,8 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         frame.add(new JScrollPane(area));
         frame.setVisible(true);
     }
-
+    
+//just for testing, currently inactive
     public static void testingKelly() {
         UserAccount user = new UserAccount("Kelly", "1234", 1001);
 

@@ -1,9 +1,14 @@
 package eventManager;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Event implements Serializable {
-
+	private static ArrayList<Event> createdEventsList = new ArrayList<Event>();
     private static final long serialVersionUID = 1L;
 
     private String eventName;
@@ -44,4 +49,56 @@ public class Event implements Serializable {
 
     public int getUserId() { return user_id; }
     public void setUserId(int user_id) { this.user_id = user_id; }
+    
+    public void addEvent()
+	{
+		deSerialiseEventCreationArray();
+		createdEventsList.add(this);
+		saveEvents();
+	}		
+	public static ArrayList<Event> createdEventsList()
+	{
+			
+		deSerialiseEventCreationArray();
+		return createdEventsList;
+	}		
+	public static void deleteUsers()
+	{
+		createdEventsList.clear();
+		saveEvents();
+	}
+	private static void saveEvents()
+	{
+		try{
+			FileOutputStream fo = new FileOutputStream("users.ser");
+			ObjectOutputStream oo = new ObjectOutputStream(fo);
+				oo.reset();
+				oo.writeObject(createdEventsList);
+				oo.close();
+		}
+		catch(Exception e){
+				e.printStackTrace();
+		}
+	}	
+	private static void deSerialiseEventCreationArray()		
+	{
+		try{
+			System.out.println("Tring to deserialize");
+			FileInputStream fi = new FileInputStream("users.ser");
+			ObjectInputStream oi = new ObjectInputStream(fi);
+				
+			ArrayList<Event> newList = (ArrayList<Event>)oi.readObject();					
+			createdEventsList = newList;
+			oi.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			try{
+				saveEvents();
+			}
+			catch(Exception e1){
+				e1.printStackTrace();
+			}
+		}
+	}
 }
