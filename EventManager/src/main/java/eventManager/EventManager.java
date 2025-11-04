@@ -9,8 +9,10 @@ public class EventManager implements Serializable {
     private static ArrayList<Event> events = new ArrayList<>();
 
     public static void addEvent(Event event) {
+    	Event newEvent = new Event("Kelly's Event Test", "X207", 100, 45, 250.0, "Cake free gluten.");
         loadEvents();
         events.add(event);
+        events.add(newEvent);
         saveEvents();
     }
 
