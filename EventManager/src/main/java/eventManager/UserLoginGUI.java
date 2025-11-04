@@ -4,11 +4,13 @@ import java.awt.FlowLayout;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.ArrayList;
+import eventManager.UserHomescreenGUI;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class UserLoginGUI extends JFrame implements ActionListener
 {
@@ -30,6 +32,8 @@ public class UserLoginGUI extends JFrame implements ActionListener
 	JFrame window = new JFrame("Create Account");
 	
 	FlowLayout flowLayout = new FlowLayout();
+	
+	private UserAccount loggedInUser; 
 	
 	public UserLoginGUI() 
 	{
@@ -74,3 +78,30 @@ public class UserLoginGUI extends JFrame implements ActionListener
 		
 	}
 }
+
+//public void actionPerformed(ActionEvent e) {
+//    if (e.getSource() == loginButton) {
+//        String name = nameText.getText().trim();
+//        String password = passwordText.getText().trim();
+//
+//        // Ensure we have the latest user data
+//        ArrayList<UserAccount> users = UserAccount.getUserList();
+//
+//        // Declare final variable so it can be used inside lambda
+//        final UserAccount loggedInUser = users.stream()
+//            .filter(u -> u.getName().equals(name) && u.getPassword().equals(password))
+//            .findFirst()
+//            .orElse(null);
+//
+//        if (loggedInUser == null) {
+//            messageLabel.setText("Invalid username or password!");
+//        } else {
+//            messageLabel.setText("Login successful!");
+//
+//            SwingUtilities.invokeLater(() -> new UserHomescreenGUI(loggedInUser));
+//
+//            // Close the login window
+//            window.dispose();
+//        }
+//    }
+//}

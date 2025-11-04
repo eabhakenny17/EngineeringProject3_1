@@ -1,9 +1,10 @@
 package eventManager;
-
+//REGULAR USER ACCOUNT
 import java.io.Serializable;
 
 public abstract class Account implements Serializable
 {
+	
 	private String name;
 	private String password;
 	private int id;
@@ -13,8 +14,7 @@ public abstract class Account implements Serializable
 	{
 		this.name = name;
 		this.password = password;
-		this.id = id;
-		
+		this.id = id;	
 		
 	}
 

@@ -1,29 +1,96 @@
 package eventManager;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import javax.swing.*;
 
-import javax.swing.JFrame;
+public class UserHomescreenGUI extends JFrame implements ActionListener {
 
-public class UserHomescreenGUI extends JFrame implements ActionListener
-{
-	public UserAccount user;
-	
-	
-	
-	public UserHomescreenGUI(UserAccount user) 
-	{
-		this.user = user;
-		
-		
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
+    private UserAccount user;
+    private ArrayList<Event> userEvents;
+    private DefaultListModel<String> listModel;
+    private JList<String> eventList;
+    private JButton viewDetailsButton;
+
+    public UserHomescreenGUI(UserAccount user) {
+        this.user = user;
+
+        setTitle("Welcome, " + user.getName());
+        setSize(400, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+
+        JLabel header = new JLabel("Upcoming Events", SwingConstants.CENTER);
+        header.setFont(new Font("Arial", Font.BOLD, 18));
+        add(header, BorderLayout.NORTH);
+
+        // Load events for this user
+        userEvents = EventManager.getEventsForUser(user.getId());
+        listModel = new DefaultListModel<>();
+        for (Event e : userEvents) {
+            listModel.addElement(e.getEventName());
+        }
+
+        eventList = new JList<>(listModel);
+        eventList.setFont(new Font("Arial", Font.PLAIN, 14));
+        JScrollPane scrollPane = new JScrollPane(eventList);
+        add(scrollPane, BorderLayout.CENTER);
+
+        viewDetailsButton = new JButton("View Details");
+        viewDetailsButton.addActionListener(this);
+        add(viewDetailsButton, BorderLayout.SOUTH);
+
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == viewDetailsButton) {
+            int index = eventList.getSelectedIndex();
+            if (index == -1) {
+                JOptionPane.showMessageDialog(this, "Please select an event.");
+                return;
+            }
+            showEventDetails(userEvents.get(index));
+        }
+    }
+
+    private void showEventDetails(Event event) {
+        JFrame frame = new JFrame(event.getEventName());
+        frame.setSize(350, 300);
+        frame.setLocationRelativeTo(this);
+
+        JTextArea area = new JTextArea();
+        area.setEditable(false);
+        area.setFont(new Font("Monospaced", Font.PLAIN, 13));
+
+        String info = "Event: " + event.getEventName() +
+                      "\nVenue: " + event.getVenue() +
+                      "\nMax Attendance: " + event.getMaxAttendance() +
+                      "\nCurrent Attendance: " + event.getAttendance() +
+                      "\nBudget: $" + event.getBudget() +
+                      "\n\nNotes:\n" + event.getNotes();
+
+        area.setText(info);
+        frame.add(new JScrollPane(area));
+        frame.setVisible(true);
+    }
+
+    public static void wasMain(String[] args) {
+        UserAccount user = new UserAccount("Kelly", "1234", 1001);
+
+        // Create events linked to this user
+        Event e1 = new Event("Kelly's Baby Shower", "X207", 100, 45, 250.0, "Bring gifts!");
+        e1.setUserId(user.getId());
+        EventManager.addEvent(e1);
+
+        Event e2 = new Event("Office Party", "V305", 50, 30, 500.0, "Formal attire required.");
+        e2.setUserId(user.getId());
+        EventManager.addEvent(e2);
+
+        // Launch GUI
+        new UserHomescreenGUI(user);
+    }
 }
