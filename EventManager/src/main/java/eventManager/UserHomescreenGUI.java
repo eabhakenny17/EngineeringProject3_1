@@ -22,38 +22,45 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        JLabel header = new JLabel("Upcoming Events", SwingConstants.CENTER);
-        header.setFont(new Font("Arial", Font.BOLD, 18));
-        add(header, BorderLayout.NORTH);
+        ArrayList<Event> allEvents = EventManager.getAllEvents();
+        userEvents = new ArrayList<>();
 
-        // Load events for this user
-        userEvents = EventManager.getEventsForUser(user.getId());
-        listModel = new DefaultListModel<>();
-        for (Event e : userEvents) {
-            listModel.addElement(e.getEventName());
+        for (Event e : allEvents) {
+            if (e.getUserId() == user.getId()) {
+                userEvents.add(e);
+            }
         }
-
+        
+        listModel = new DefaultListModel<>();
+        if (userEvents.isEmpty()) {
+            listModel.addElement("(No upcoming events found)");
+        } else {
+            for (Event e : userEvents) {
+                listModel.addElement(e.getEventName());
+            }
+        }
+        
         eventList = new JList<>(listModel);
-        eventList.setFont(new Font("Arial", Font.PLAIN, 14));
         JScrollPane scrollPane = new JScrollPane(eventList);
         add(scrollPane, BorderLayout.CENTER);
 
         viewDetailsButton = new JButton("View Details");
         viewDetailsButton.addActionListener(this);
-        add(viewDetailsButton, BorderLayout.SOUTH);
 
         setVisible(true);
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == viewDetailsButton) {
             int index = eventList.getSelectedIndex();
-            if (index == -1) {
-                JOptionPane.showMessageDialog(this, "Please select an event.");
+            if (index == -1 || userEvents.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please select a valid event!");
                 return;
             }
-            showEventDetails(userEvents.get(index));
+
+            Event selectedEvent = userEvents.get(index);
+            showEventDetails(selectedEvent);
         }
     }
 
@@ -63,25 +70,18 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         frame.setLocationRelativeTo(this);
 
         JTextArea area = new JTextArea();
-        area.setEditable(false);
-        area.setFont(new Font("Monospaced", Font.PLAIN, 13));
 
-        String info = "Event: " + event.getEventName() +
-                      "\nVenue: " + event.getVenue() +
-                      "\nMax Attendance: " + event.getMaxAttendance() +
-                      "\nCurrent Attendance: " + event.getAttendance() +
-                      "\nBudget: $" + event.getBudget() +
-                      "\n\nNotes:\n" + event.getNotes();
+        String info = "Event: " + event.getEventName() + "\nVenue: " + event.getVenue() + "\nMax Attendance: " + event.getMaxAttendance() + 
+        			"\nCurrent Attendance: " + event.getAttendance() + "\nBudget: $" + event.getBudget() + "\n\nNotes:\n" + event.getNotes();
 
         area.setText(info);
         frame.add(new JScrollPane(area));
         frame.setVisible(true);
     }
 
-    public static void wasMain(String[] args) {
+    public static void testingKelly() {
         UserAccount user = new UserAccount("Kelly", "1234", 1001);
 
-        // Create events linked to this user
         Event e1 = new Event("Kelly's Baby Shower", "X207", 100, 45, 250.0, "Bring gifts!");
         e1.setUserId(user.getId());
         EventManager.addEvent(e1);

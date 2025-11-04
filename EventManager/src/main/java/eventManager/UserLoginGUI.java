@@ -13,8 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class UserLoginGUI extends JFrame implements ActionListener
-{
-	
+{	
 	private Login login = new Login();
 	
 	private JButton loginButton = new JButton("Login");
@@ -38,30 +37,40 @@ public class UserLoginGUI extends JFrame implements ActionListener
 	public UserLoginGUI() 
 	{
 		// Setup initial window
-			window.setLayout(flowLayout);
+		window.setLayout(flowLayout);
 				
-			loginButton.addActionListener(this);
-			panel.add(nameLabel);
-			panel.add(nameText);
-			panel.add(passwordLabel);
-			panel.add(passwordText);
-			panel.add(loginButton);
+		loginButton.addActionListener(this);
+		panel.add(nameLabel);
+		panel.add(nameText);
+		panel.add(passwordLabel);
+		panel.add(passwordText);
+		panel.add(loginButton);
 			
-			panel.add(messageLabel);
+		panel.add(messageLabel);
 			
 			
-			window.getContentPane().add(panel);
-			window.pack();
-			window.setVisible(true);
+		window.getContentPane().add(panel);
+		window.pack();
+		window.setVisible(true);
 			
-			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		
 		if(e.getSource().equals(loginButton))
 		{
+            ArrayList<UserAccount> users = UserAccount.getUserList();
+            UserAccount loggedInUser = null;
+
+            for (UserAccount u : users) {
+                if (u.getName().equals(nameText.getText()) && u.getPassword().equals(passwordText.getText())) {
+                    loggedInUser = u;
+                    break;
+                }
+            }
 			int userId = login.attemptLogin(nameText.getText(), passwordText.getText());
 			
 			if (userId == 0)
@@ -71,37 +80,12 @@ public class UserLoginGUI extends JFrame implements ActionListener
 			}
 			else
 			{
-				new UserHomescreenGUI(login.signInViaID(userId));
-				window.setVisible(false);
+//				new UserHomescreenGUI(login.signInViaID(userId));
+//				window.setVisible(false);
+				new UserHomescreenGUI(loggedInUser);
+	            window.dispose(); 
 			}
 		}
 		
 	}
 }
-
-//public void actionPerformed(ActionEvent e) {
-//    if (e.getSource() == loginButton) {
-//        String name = nameText.getText().trim();
-//        String password = passwordText.getText().trim();
-//
-//        // Ensure we have the latest user data
-//        ArrayList<UserAccount> users = UserAccount.getUserList();
-//
-//        // Declare final variable so it can be used inside lambda
-//        final UserAccount loggedInUser = users.stream()
-//            .filter(u -> u.getName().equals(name) && u.getPassword().equals(password))
-//            .findFirst()
-//            .orElse(null);
-//
-//        if (loggedInUser == null) {
-//            messageLabel.setText("Invalid username or password!");
-//        } else {
-//            messageLabel.setText("Login successful!");
-//
-//            SwingUtilities.invokeLater(() -> new UserHomescreenGUI(loggedInUser));
-//
-//            // Close the login window
-//            window.dispose();
-//        }
-//    }
-//}
