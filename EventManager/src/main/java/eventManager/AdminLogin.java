@@ -7,13 +7,14 @@ public class AdminLogin
 	// If login is valid returns the id, otherwise returns 0
 	public int attemptLogin(String name, String password)
 	{
-		ArrayList<UserAccount> userList = UserAccount.getUserList();
+		AllAdminAccounts adminList = new AllAdminAccounts();
+		ArrayList<AdminAccount> admins = adminList.getAdminAccountsList();
 		
-		for (UserAccount item : userList)
+		for (AdminAccount a : admins)
 		{
-			if (item.getName().equals(name) && item.getPassword().equals(password))
+			if (a.getName().equals(name) && a.getPassword().equals(password))
 			{
-				return item.getId();
+				return a.getAId();
 			}
 		}
 		

@@ -62,10 +62,13 @@ public class AdminLoginGUI extends JFrame implements ActionListener
 		
 		if(e.getSource().equals(loginButton))
 		{
-            ArrayList<UserAccount> users = UserAccount.getUserList();
-            UserAccount loggedInUser = null;
-
-            for (UserAccount u : users) {
+			AllAdminAccounts adminList = new AllAdminAccounts();
+			ArrayList<AdminAccount> admins = adminList.getAdminAccountsList();
+			
+			AdminAccount loggedInUser = null;
+			
+			//CHANGE DO THAT ONLY PREVIOUSLY CREATED ADMIN ACCOUNTS CAN ACCESS
+			for (AdminAccount u : admins) {
                 if (u.getName().equals(nameText.getText()) && u.getPassword().equals(passwordText.getText())) {
                     loggedInUser = u;
                     break;
@@ -82,7 +85,7 @@ public class AdminLoginGUI extends JFrame implements ActionListener
 			{
 //				new UserHomescreenGUI(login.signInViaID(userId));
 //				window.setVisible(false);
-				new UserHomescreenGUI(loggedInUser);
+				new AdminHomescreenGUI(loggedInUser);
 	            window.dispose(); 
 			}
 		}

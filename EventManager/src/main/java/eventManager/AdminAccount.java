@@ -2,7 +2,7 @@ package eventManager;
 //ADMIN USER ACCOUNT
 import java.io.Serializable;
 
-public abstract class AdminAccount implements Serializable
+public class AdminAccount implements Serializable 
 {
 
     private String Aname;
@@ -10,11 +10,11 @@ public abstract class AdminAccount implements Serializable
     private int Aid;
 
 
-    public AdminAccount(String name, String password, int id) 
+    public AdminAccount(String name, String password, int Aid) 
     {
         this.Aname = name;
         this.Apassword = password;
-        this.Aid = id;
+        this.Aid = Aid;
 
     }
 
@@ -34,12 +34,12 @@ public abstract class AdminAccount implements Serializable
         this.Apassword = password;
     }
 
-    public int getId() {
+    public int getAId() {
         return Aid;
     }
 
-    public void setId(int id) {
-        this.Aid = id;
+    public void setAId(int Aid) {
+        this.Aid = Aid;
     }
 
 
