@@ -1,56 +1,47 @@
 package eventManager;
 
-public class Event 
-{
-	private String eventName;
-	private String eventDiscription;
-	private int creatorsId;
-	private int peopleAttending;
-	
-	
-	
-	
-	
-	public Event(String eventName, String eventDiscription, int creatorsId, int peopleAttending) 
-	{
-		this.eventName = eventName;
-		this.eventDiscription = eventDiscription;
-		this.peopleAttending = peopleAttending;
-		this.creatorsId = creatorsId;
-	}
+import java.io.Serializable;
 
-	public String getEventName() {
-		return eventName;
-	}
+public class Event implements Serializable {
 
-	public void setEventName(String eventName) {
-		this.eventName = eventName;
-	}
+    private static final long serialVersionUID = 1L;
 
-	public String getEventDiscription() {
-		return eventDiscription;
-	}
+    private String eventName;
+    private String venue;
+    private int maxAttendance;
+    private int attendance;
+    private double budget;
+    private String notes;
+    private int user_id;
 
-	public void setEventDiscription(String eventDiscription) {
-		this.eventDiscription = eventDiscription;
-	}
+    public Event(String eventName, String venue, int maxAttendance, int attendance, double budget, String notes) {
+        this.eventName = eventName;
+        this.venue = venue;
+        this.maxAttendance = maxAttendance;
+        this.attendance = attendance;
+        this.budget = budget;
+        this.notes = notes;
+    }
 
-	public int getPeopleAttending() {
-		return peopleAttending;
-	}
+    // Getters and Setters
+    public String getEventName() { return eventName; }
+    public void setEventName(String eventName) { this.eventName = eventName; }
 
-	public void setPeopleAttending(int peopleAttending) {
-		this.peopleAttending = peopleAttending;
-	}
+    public String getVenue() { return venue; }
+    public void setVenue(String venue) { this.venue = venue; }
 
-	public int getCreatorsId() {
-		return creatorsId;
-	}
+    public int getMaxAttendance() { return maxAttendance; }
+    public void setMaxAttendance(int maxAttendance) { this.maxAttendance = maxAttendance; }
 
-	public void setCreatorsId(int creatorsId) {
-		this.creatorsId = creatorsId;
-	}
+    public int getAttendance() { return attendance; }
+    public void setAttendance(int attendance) { this.attendance = attendance; }
 
-	
-	
+    public double getBudget() { return budget; }
+    public void setBudget(double budget) { this.budget = budget; }
+
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
+
+    public int getUserId() { return user_id; }
+    public void setUserId(int user_id) { this.user_id = user_id; }
 }
