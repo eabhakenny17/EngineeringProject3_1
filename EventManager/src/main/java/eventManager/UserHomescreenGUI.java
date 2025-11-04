@@ -69,13 +69,31 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Please select a valid event!");
                 return;
             }
-            Event selectedEvent = userEvents.get(index);
+            ArrayList<Event> updatedEvents = new ArrayList<>();
+            for (Event ev : Event.getCreatedEventsList()) {
+                if (ev.getUserId() == user.getId()) {
+                    updatedEvents.add(ev);
+                }
+            }
+
+            if (index >= updatedEvents.size()) {
+                return;
+            }
+
+            Event selectedEvent = updatedEvents.get(index);
             showEventDetails(selectedEvent);
         }
         
-        if(e.getSource() == createEventButton) {
-        	EventCreation eventCreation = new EventCreation();
-			eventCreation.EventGUI();
+        if (e.getSource() == createEventButton) {
+            EventCreation eventCreation = new EventCreation(user);
+            eventCreation.EventGUI();
+
+            eventCreation.getEventCreationWindow().addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent we) {
+                    refreshEventList();
+                }
+            });
         }
     }
 
@@ -83,30 +101,50 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         JFrame frame = new JFrame(event.getEventName());
         frame.setSize(350, 300);
         frame.setLocationRelativeTo(this);
+        
+        ArrayList<Event> allEvents = Event.getCreatedEventsList();
 
         JTextArea area = new JTextArea();
+        area.setEditable(false);
+        area.setFont(new Font("Monospaced", Font.PLAIN, 12));
 
-        String info = "Event: " + event.getEventName() + "\nVenue: " + event.getVenue() + "\nMax Attendance: " + event.getMaxAttendance() + 
-        			"\nCurrent Attendance: " + event.getAttendance() + "\nBudget: $" + event.getBudget() + "\n\nNotes:\n" + event.getNotes();
+        StringBuilder info = new StringBuilder();
+        int userId = user.getId();
+        int count = 0;
 
-        area.setText(info);
+        for (Event e : allEvents) {
+            if (e.getUserId() == userId) {
+    	        info.append("Event: ").append(e.getEventName()).append("\nVenue: ").append(e.getVenue()).append("\nMax Attendance: ").append(e.getMaxAttendance()).append("\nCurrent Attendance: ").append(e.getAttendance()).append("\nBudget: $").append(e.getBudget()).append("\nNotes: ").append(e.getNotes()).append("\n----------------------------------------\n");
+    	    }
+        }
+
+        if (count == 0) {
+            //info.append("No events");
+        }
+
+        area.setText(info.toString());
         frame.add(new JScrollPane(area));
         frame.setVisible(true);
     }
     
-//just for testing, currently inactive
-    public static void testingKelly() {
-        UserAccount user = new UserAccount("Kelly", "1234", 1001);
+    public void refreshEventList() {
+        listModel.clear();
+        userEvents.clear();
 
-        Event e1 = new Event("Kelly's Baby Shower", "X207", 100, 45, 250.0, "Bring gifts!");
-        e1.setUserId(user.getId());
-        EventManager.addEvent(e1);
+        ArrayList<Event> allEvents = Event.getCreatedEventsList();
 
-        Event e2 = new Event("Office Party", "V305", 50, 30, 500.0, "Formal attire required.");
-        e2.setUserId(user.getId());
-        EventManager.addEvent(e2);
+        for (Event e : allEvents) {
+            if (e.getUserId() == user.getId()) {
+                userEvents.add(e);
+                listModel.addElement(e.getEventName());
+            }
+        }
 
-        // Launch GUI
-        new UserHomescreenGUI(user);
+        if (userEvents.isEmpty()) {
+            listModel.addElement("(No upcoming events found)");
+        }
+
+        System.out.println("Event list refreshed for " + user.getName());
     }
+
 }

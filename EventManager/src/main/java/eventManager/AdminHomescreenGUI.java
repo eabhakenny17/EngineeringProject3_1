@@ -5,6 +5,8 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
+import eventManager.Event;
+
 public class AdminHomescreenGUI extends JFrame implements ActionListener {
 
     private AdminAccount user;
@@ -69,28 +71,71 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Please select a valid event!");
                 return;
             }
-            Event selectedEvent = userEvents.get(index);
+            ArrayList<Event> updatedEvents = new ArrayList<>();
+            for (Event ev : Event.getCreatedEventsList()) {
+                if (ev.getUserId() == user.getAId()) {
+                    updatedEvents.add(ev);
+                }
+            }
+
+            if (index >= updatedEvents.size()) {
+                return;
+            }
+
+            Event selectedEvent = updatedEvents.get(index);
             showEventDetails(selectedEvent);
         }
         
-        if(e.getSource() == createEventButton) {
-        	EventCreation eventCreation = new EventCreation();
-			eventCreation.EventGUI();
+        if (e.getSource() == createEventButton) {
+            EventCreation eventCreation = new EventCreation(user);
+            eventCreation.EventGUI();
+
+            eventCreation.getEventCreationWindow().addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent we) {
+                    refreshEventList();
+                }
+            });
         }
     }
 
     private void showEventDetails(Event event) {
-        JFrame frame = new JFrame(event.getEventName());
-        frame.setSize(350, 300);
-        frame.setLocationRelativeTo(this);
+    	 ArrayList<Event> eventList = Event.getCreatedEventsList();
 
-        JTextArea area = new JTextArea();
+    	    JTextArea area = new JTextArea();
+    	    area.setEditable(false);
 
-        String info = "Event: " + event.getEventName() + "\nVenue: " + event.getVenue() + "\nMax Attendance: " + event.getMaxAttendance() + 
-        			"\nCurrent Attendance: " + event.getAttendance() + "\nBudget: $" + event.getBudget() + "\n\nNotes:\n" + event.getNotes();
+    	    StringBuilder info = new StringBuilder();
 
-        area.setText(info);
-        frame.add(new JScrollPane(area));
-        frame.setVisible(true);
+    	    for (Event e : eventList) {
+    	        info.append("Event: ").append(e.getEventName()).append("\nVenue: ").append(e.getVenue()).append("\nMax Attendance: ").append(e.getMaxAttendance()).append("\nCurrent Attendance: ").append(e.getAttendance()).append("\nBudget: $").append(e.getBudget()).append("\nNotes: ").append(e.getNotes()).append("\n----------------------------------------\n");
+    	    }
+
+    	    if (eventList.isEmpty()) {
+    	        info.append("(No events have been created yet.)");
+    	    }
+
+    	    area.setText(info.toString());
     }
+    
+    public void refreshEventList() {
+        listModel.clear();
+        userEvents.clear();
+
+        ArrayList<Event> allEvents = Event.getCreatedEventsList();
+
+        for (Event e : allEvents) {
+            if (e.getUserId() == user.getAId()) {
+                userEvents.add(e);
+                listModel.addElement(e.getEventName());
+            }
+        }
+
+        if (userEvents.isEmpty()) {
+            listModel.addElement("(No upcoming events found)");
+        }
+
+        System.out.println("Event list refreshed for " + user.getName());
+    }
+
 }

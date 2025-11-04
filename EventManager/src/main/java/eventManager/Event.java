@@ -19,7 +19,15 @@ public class Event implements Serializable {
     private String notes;
     private int user_id;
 
-    public Event(String eventName, String venue, int maxAttendance, int attendance, double budget, String notes) {
+    public static ArrayList<Event> getCreatedEventsList() {
+		return createdEventsList;
+	}
+
+	public static void setCreatedEventsList(ArrayList<Event> createdEventsList) {
+		Event.createdEventsList = createdEventsList;
+	}
+
+	public Event(String eventName, String venue, int maxAttendance, int attendance, double budget, String notes) {
         this.eventName = eventName;
         this.venue = venue;
         this.maxAttendance = maxAttendance;
@@ -70,7 +78,7 @@ public class Event implements Serializable {
 	private static void saveEvents()
 	{
 		try{
-			FileOutputStream fo = new FileOutputStream("users.ser");
+			FileOutputStream fo = new FileOutputStream("events.ser");
 			ObjectOutputStream oo = new ObjectOutputStream(fo);
 				oo.reset();
 				oo.writeObject(createdEventsList);
@@ -84,7 +92,7 @@ public class Event implements Serializable {
 	{
 		try{
 			System.out.println("Tring to deserialize");
-			FileInputStream fi = new FileInputStream("users.ser");
+			FileInputStream fi = new FileInputStream("events.ser");
 			ObjectInputStream oi = new ObjectInputStream(fi);
 				
 			ArrayList<Event> newList = (ArrayList<Event>)oi.readObject();					

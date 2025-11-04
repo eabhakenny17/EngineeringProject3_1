@@ -10,6 +10,17 @@ import java.util.*;
 import javax.swing.*;
 
 public class EventCreation extends JFrame implements ActionListener {
+	
+    private UserAccount userCreator; 
+    public EventCreation(UserAccount userCreator) {
+        this.userCreator = userCreator;
+    }
+    
+    private AdminAccount adminCreator; 
+    public EventCreation(AdminAccount adminCreator) {
+        this.adminCreator = adminCreator;
+    }
+	
 	private JButton createEventBtn = new JButton("Create an event.");
 	private JButton saveEventBtn = new JButton("Save event.");
 	private TextArea textArea = new TextArea("");
@@ -54,6 +65,10 @@ public class EventCreation extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	public JFrame getEventCreationWindow() {
+	    return eventCreationWindow;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(saveEventBtn)) {
@@ -68,11 +83,15 @@ public class EventCreation extends JFrame implements ActionListener {
 	                int attendanceInt = Integer.parseInt(attendanceTextArea.getText());
 	                double budgetDouble = Double.parseDouble(budgetTextArea.getText());
 
-	                Event newEvent = new Event(eventNameTextArea.getText(), venueTextArea.getText(), maxAttendanceInt, attendanceInt, budgetDouble, notesTextArea.getText());
+	                Event newEvent = new Event(eventNameTextArea.getText(), venueTextArea.getText(), 
+	                           maxAttendanceInt, attendanceInt, budgetDouble, notesTextArea.getText());
+
+	                if (adminCreator != null) {
+	                	newEvent.setUserId(adminCreator.getAId());
+	                }
 
 	                EventManager.addEvent(newEvent);
 	                System.out.println("saving event...");
-	                eventCreationWindow.dispose();
 
 	            } catch (NumberFormatException ex) {
 	            	System.out.println("user inputted wrong data types #loser");
