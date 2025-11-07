@@ -34,7 +34,7 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         
         listModel = new DefaultListModel<>();
         if (userEvents.isEmpty()) {
-            listModel.addElement("(No upcoming events found)");
+            listModel.addElement("No upcoming events found");
         } else {
             for (Event e : userEvents) {
                 listModel.addElement(e.getEventName());
@@ -45,8 +45,7 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         JScrollPane scrollPane = new JScrollPane(eventList);
         add(scrollPane, BorderLayout.CENTER);
         
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
 
         viewDetailsButton = new JButton("View Details");
         viewDetailsButton.addActionListener(this);
@@ -63,31 +62,21 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == viewDetailsButton) {
+    	if (e.getSource() == viewDetailsButton) {
             int index = eventList.getSelectedIndex();
             if (index == -1 || userEvents.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please select a valid event!");
-                return;
-            }
-            ArrayList<Event> updatedEvents = new ArrayList<>();
-            for (Event ev : Event.getCreatedEventsList()) {
-                if (ev.getUserId() == user.getId()) {
-                    updatedEvents.add(ev);
-                }
             }
 
-            if (index >= updatedEvents.size()) {
-                return;
-            }
-
-            Event selectedEvent = updatedEvents.get(index);
+            Event selectedEvent = userEvents.get(index);
             showEventDetails(selectedEvent);
         }
-        
+
         if (e.getSource() == createEventButton) {
             EventCreation eventCreation = new EventCreation(user);
             eventCreation.EventGUI();
 
+            // Refresh list after event window closes
             eventCreation.getEventCreationWindow().addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent we) {
@@ -106,12 +95,11 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
 
         JTextArea area = new JTextArea();
         area.setEditable(false);
-        area.setFont(new Font("Monospaced", Font.PLAIN, 12));
-
+        
         StringBuilder info = new StringBuilder();
-        int userId = user.getId();
-        int count = 0;
+        int adminId = user.getId();
 
+        ArrayList<Event> allEvents = EventManager.getAllEvents();
         for (Event e : allEvents) {
             if (e.getUserId() == userId) {
     	        info.append("Event: ").append(e.getEventName()).append("\nVenue: ").append(e.getVenue()).append("\nMax Attendance: ").append(e.getMaxAttendance()).append("\nCurrent Attendance: ").append(e.getAttendance()).append("\nBudget: $").append(e.getBudget()).append("\nNotes: ").append(e.getNotes()).append("\n----------------------------------------\n");
@@ -119,7 +107,7 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         }
 
         if (count == 0) {
-            //info.append("No events");
+            info.append("No events");
         }
 
         area.setText(info.toString());

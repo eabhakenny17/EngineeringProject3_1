@@ -21,12 +21,12 @@ public class EventCreation extends JFrame implements ActionListener {
         this.adminCreator = adminCreator;
     }
 	
-	private JButton createEventBtn = new JButton("Create an event.");
+	//private JButton createEventBtn = new JButton("Create an event.");
 	private JButton saveEventBtn = new JButton("Save event.");
-	private TextArea textArea = new TextArea("");
+	//private TextArea textArea = new TextArea("");
 	//first window
-	private JFrame startWindow = new JFrame();
-	private JPanel startPanel = new JPanel();
+	//private JFrame startWindow = new JFrame();
+	//private JPanel startPanel = new JPanel();
 	//second window
 	private JFrame eventCreationWindow = new JFrame();
 	private JPanel eventCreationPanel = new JPanel();
@@ -40,12 +40,6 @@ public class EventCreation extends JFrame implements ActionListener {
 	
 	public void EventGUI() {
 		System.out.println("Calling GUI method from EventCreation");
-//		startPanel.add(createEventBtn);
-//		startPanel.setSize(400, 400);
-//		createEventBtn.addActionListener(this);
-//		startWindow.getContentPane().add(startPanel);
-//		startWindow.pack();
-//		startWindow.setVisible(true);
 		
 		eventCreationWindow.getContentPane().add(eventCreationPanel);
 		eventCreationPanel.setSize(400, 400);
@@ -59,9 +53,11 @@ public class EventCreation extends JFrame implements ActionListener {
 		eventCreationPanel.add(notesLabel); eventCreationPanel.add(notesTextArea);
 		eventCreationPanel.add(saveEventBtn);
 		saveEventBtn.addActionListener(this);
-		eventCreationWindow.pack();
-		eventCreationWindow.setVisible(true);
 		
+		eventCreationWindow.add(eventCreationPanel);
+        eventCreationWindow.pack();
+        eventCreationWindow.setLocationRelativeTo(null);
+        eventCreationWindow.setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
@@ -85,7 +81,9 @@ public class EventCreation extends JFrame implements ActionListener {
 
 	                Event newEvent = new Event(eventNameTextArea.getText(), venueTextArea.getText(), 
 	                           maxAttendanceInt, attendanceInt, budgetDouble, notesTextArea.getText());
-
+	                
+	                if (userCreator != null)
+	                    newEvent.setUserId(userCreator.getId());
 	                if (adminCreator != null) {
 	                	newEvent.setUserId(adminCreator.getAId());
 	                }

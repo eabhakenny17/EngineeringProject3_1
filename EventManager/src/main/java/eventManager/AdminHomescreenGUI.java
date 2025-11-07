@@ -5,50 +5,47 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
-import eventManager.Event;
-
 public class AdminHomescreenGUI extends JFrame implements ActionListener {
 
-    private AdminAccount user;
-    private ArrayList<Event> userEvents;
+    private AdminAccount admin;
+    private ArrayList<Event> adminEvents;
     private DefaultListModel<String> listModel;
     private JList<String> eventList;
     private JButton viewDetailsButton;
     private JButton createEventButton;
 
-    public AdminHomescreenGUI(AdminAccount user) {
-        this.user = user;
+    public AdminHomescreenGUI(AdminAccount admin) {
+        this.admin = admin;
 
-        setTitle("Welcome, " + user.getName() + ". You are logged into an admin account.");
+        setTitle("Welcome, " + admin.getName() + " (Admin)");
         setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
         ArrayList<Event> allEvents = EventManager.getAllEvents();
-        userEvents = new ArrayList<>();
+        adminEvents = new ArrayList<>();
 
         for (Event e : allEvents) {
-            if (e.getUserId() == user.getAId()) {
-                userEvents.add(e);
+            if (e.getUserId() == admin.getAId()) {
+                adminEvents.add(e);
             }
         }
-        
+
         listModel = new DefaultListModel<>();
-        if (userEvents.isEmpty()) {
-            listModel.addElement("(No upcoming events found)");
-        } else {
-            for (Event e : userEvents) {
+        if (adminEvents.isEmpty()) {
+            listModel.addElement("No upcoming events found");
+        } 
+        else {
+            for (Event e : adminEvents) {
                 listModel.addElement(e.getEventName());
             }
         }
-        
+
         eventList = new JList<>(listModel);
         JScrollPane scrollPane = new JScrollPane(eventList);
         add(scrollPane, BorderLayout.CENTER);
-        
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
 
         viewDetailsButton = new JButton("View Details");
         viewDetailsButton.addActionListener(this);
@@ -59,37 +56,27 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
         buttonPanel.add(createEventButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
-        
+
         setVisible(true);
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == viewDetailsButton) {
             int index = eventList.getSelectedIndex();
-            if (index == -1 || userEvents.isEmpty()) {
+            if (index == -1 || adminEvents.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please select a valid event!");
-                return;
-            }
-            ArrayList<Event> updatedEvents = new ArrayList<>();
-            for (Event ev : Event.getCreatedEventsList()) {
-                if (ev.getUserId() == user.getAId()) {
-                    updatedEvents.add(ev);
-                }
             }
 
-            if (index >= updatedEvents.size()) {
-                return;
-            }
-
-            Event selectedEvent = updatedEvents.get(index);
+            Event selectedEvent = adminEvents.get(index);
             showEventDetails(selectedEvent);
         }
-        
+
         if (e.getSource() == createEventButton) {
-            EventCreation eventCreation = new EventCreation(user);
+            EventCreation eventCreation = new EventCreation(admin);
             eventCreation.EventGUI();
 
+            // Refresh list after event window closes
             eventCreation.getEventCreationWindow().addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent we) {
@@ -100,42 +87,50 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
     }
 
     private void showEventDetails(Event event) {
-    	 ArrayList<Event> eventList = Event.getCreatedEventsList();
+        JFrame frame = new JFrame(event.getEventName());
+        frame.setSize(350, 300);
+        frame.setLocationRelativeTo(this);
 
-    	    JTextArea area = new JTextArea();
-    	    area.setEditable(false);
+        JTextArea area = new JTextArea();
+        area.setEditable(false);
 
-    	    StringBuilder info = new StringBuilder();
+        StringBuilder info = new StringBuilder();
+        int adminId = admin.getAId();
 
-    	    for (Event e : eventList) {
-    	        info.append("Event: ").append(e.getEventName()).append("\nVenue: ").append(e.getVenue()).append("\nMax Attendance: ").append(e.getMaxAttendance()).append("\nCurrent Attendance: ").append(e.getAttendance()).append("\nBudget: $").append(e.getBudget()).append("\nNotes: ").append(e.getNotes()).append("\n----------------------------------------\n");
-    	    }
+        ArrayList<Event> allEvents = EventManager.getAllEvents();
+        for (Event e : allEvents) {
+            if (e.getUserId() == adminId) {
+                info.append("Event: ").append(e.getEventName()).append("\nVenue: ").append(e.getVenue()).append("\nMax Attendance: ").append(e.getMaxAttendance())
+                .append("\nActual Attendance: ").append(e.getAttendance()).append("\nBudget: $").append(e.getBudget()).append("\nNotes: ").append(e.getNotes());
+            }
+        }
 
-    	    if (eventList.isEmpty()) {
-    	        info.append("(No events have been created yet.)");
-    	    }
+        if (info.length() == 0) {
+            info.append("(No events found for this admin)");
+        }
 
-    	    area.setText(info.toString());
+        area.setText(info.toString());
+        frame.add(new JScrollPane(area));
+        frame.setVisible(true);
     }
-    
+
     public void refreshEventList() {
         listModel.clear();
-        userEvents.clear();
+        adminEvents.clear();
 
-        ArrayList<Event> allEvents = Event.getCreatedEventsList();
+        ArrayList<Event> allEvents = EventManager.getAllEvents();
 
         for (Event e : allEvents) {
-            if (e.getUserId() == user.getAId()) {
-                userEvents.add(e);
+            if (e.getUserId() == admin.getAId()) {
+                adminEvents.add(e);
                 listModel.addElement(e.getEventName());
             }
         }
 
-        if (userEvents.isEmpty()) {
+        if (adminEvents.isEmpty()) {
             listModel.addElement("(No upcoming events found)");
         }
 
-        System.out.println("Event list refreshed for " + user.getName());
+        System.out.println("Event list refreshed for admin: " + admin.getName());
     }
-
 }
