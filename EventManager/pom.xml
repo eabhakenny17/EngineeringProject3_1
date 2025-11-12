@@ -13,5 +13,8 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<properties>
+  <sonar.organization>eabhakenny17</sonar.organization>
+</properties>
 
 </project>
