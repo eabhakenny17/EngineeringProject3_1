@@ -3,7 +3,6 @@ package eventManager;
 import java.io.Serializable;
 
 public class Event implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     private String eventName;
@@ -23,7 +22,7 @@ public class Event implements Serializable {
         this.notes = notes;
     }
 
-    // Getters and Setters
+    // Getters and setters
     public String getEventName() { return eventName; }
     public void setEventName(String eventName) { this.eventName = eventName; }
 

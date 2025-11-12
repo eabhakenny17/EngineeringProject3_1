@@ -4,15 +4,12 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class EventManager implements Serializable {
-
     private static final long serialVersionUID = 1L;
     private static ArrayList<Event> events = new ArrayList<>();
 
     public static void addEvent(Event event) {
-    	Event newEvent = new Event("Kelly's Event Test", "X207", 100, 45, 250.0, "Cake free gluten.");
-        loadEvents();
+        loadEvents(); 
         events.add(event);
-        events.add(newEvent);
         saveEvents();
     }
 
@@ -47,7 +44,6 @@ public class EventManager implements Serializable {
              ObjectInputStream in = new ObjectInputStream(fileIn)) {
             events = (ArrayList<Event>) in.readObject();
         } catch (Exception e) {
-            // File not found or empty — initialize empty list
             events = new ArrayList<>();
         }
     }
