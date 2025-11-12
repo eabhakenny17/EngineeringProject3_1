@@ -12,9 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class UserLoginGUI extends JFrame implements ActionListener
+public class AdminLoginGUI extends JFrame implements ActionListener
 {	
-	private Login login = new Login();
+	private AdminLogin adminlogin = new AdminLogin();
 	
 	private JButton loginButton = new JButton("Login");
 	
@@ -26,15 +26,15 @@ public class UserLoginGUI extends JFrame implements ActionListener
 	private TextArea nameText = new TextArea();
 	private TextArea passwordText = new TextArea();
 	
-	private JLabel messageLabel = new JLabel("");
+	private JLabel messageLabel = new JLabel("If Admin Account is invalid Contact: bossman@company.ie");
 	
-	JFrame window = new JFrame("Create Account");
+	JFrame window = new JFrame("Admin");
 	
 	FlowLayout flowLayout = new FlowLayout();
 	
 	private UserAccount loggedInUser; 
 	
-	public UserLoginGUI() 
+	public AdminLoginGUI() 
 	{
 		// Setup initial window
 		window.setLayout(flowLayout);
@@ -62,16 +62,19 @@ public class UserLoginGUI extends JFrame implements ActionListener
 		
 		if(e.getSource().equals(loginButton))
 		{
-            ArrayList<UserAccount> users = UserAccount.getUserList();
-            UserAccount loggedInUser = null;
-
-            for (UserAccount u : users) {
+			AllAdminAccounts adminList = new AllAdminAccounts();
+			ArrayList<AdminAccount> admins = adminList.getAdminAccountsList();
+			
+			AdminAccount loggedInUser = null;
+			
+			//CHANGE DO THAT ONLY PREVIOUSLY CREATED ADMIN ACCOUNTS CAN ACCESS
+			for (AdminAccount u : admins) {
                 if (u.getName().equals(nameText.getText()) && u.getPassword().equals(passwordText.getText())) {
                     loggedInUser = u;
                     break;
                 }
             }
-			int userId = login.attemptLogin(nameText.getText(), passwordText.getText());
+			int userId = adminlogin.attemptLogin(nameText.getText(), passwordText.getText());
 			
 			if (userId == 0)
 			{
@@ -82,7 +85,7 @@ public class UserLoginGUI extends JFrame implements ActionListener
 			{
 //				new UserHomescreenGUI(login.signInViaID(userId));
 //				window.setVisible(false);
-				new UserHomescreenGUI(loggedInUser);
+				new AdminHomescreenGUI(loggedInUser);
 	            window.dispose(); 
 			}
 		}

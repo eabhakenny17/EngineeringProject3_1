@@ -14,7 +14,7 @@ public class InitialScreenGUI extends JFrame implements ActionListener
 	
 	private JButton loginButton = new JButton("Log In");
 	private JButton registerButton = new JButton("Register");
-	
+	private JButton adminloginButton = new JButton("Admin Log In");
 	private JButton deleteAllButton = new JButton("DELETE ALL");
 	
 	JFrame window = new JFrame("Welcome!");
@@ -25,10 +25,12 @@ public class InitialScreenGUI extends JFrame implements ActionListener
 	{
 		loginButton.addActionListener(this);
 		registerButton.addActionListener(this);
+		adminloginButton.addActionListener(this);
 		deleteAllButton.addActionListener(this);
 		
 		panel.add(loginButton);
 		panel.add(registerButton);
+		panel.add(adminloginButton);
 		panel.add(deleteAllButton);
 		
 		window.getContentPane().add(panel);
@@ -54,6 +56,14 @@ public class InitialScreenGUI extends JFrame implements ActionListener
 		{
 			new UserCreatorGUI();
 		}
+		
+		if(e.getSource().equals(adminloginButton))
+		{
+			new AdminLoginGUI();
+			window.setVisible(false);
+			
+		}
+		
 		if(e.getSource().equals(deleteAllButton))
 		{
 			UserAccount.deleteUsers();
