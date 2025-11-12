@@ -101,7 +101,7 @@ class UserAccountTest
 		
 		ArrayList<UserAccount> list = UserAccount.getUserList();
 		
-		assertEquals("tim", list.getFirst().getName());
+		assertEquals("tim", list.get(0).getName());
 	}
 
 }
