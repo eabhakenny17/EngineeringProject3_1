@@ -104,11 +104,9 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
     	    }
         }
 
-//        if (count == 0) 
-//        {
-//        	System.out.println("jenkins test");
-//            info.append("No events");
-//        }
+        if (count == 0) {
+            info.append("No events");
+        }
 
         area.setText(info.toString());
         frame.add(new JScrollPane(area));
