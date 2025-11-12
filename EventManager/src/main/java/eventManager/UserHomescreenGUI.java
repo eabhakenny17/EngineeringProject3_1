@@ -104,7 +104,8 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
     	    }
         }
 
-        if (count == 0) {
+        if (count == 0) 
+        {
             info.append("No events");
         }
 
