@@ -105,6 +105,7 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         }
 
         if (count == 0) {
+        	System.out.println("jenkins test");
             info.append("No events");
         }
 
