@@ -104,7 +104,7 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
     	    }
         }
 
-        if (count == 0) {
+        if (info.length() == 0) {
         	System.out.println("sonarqubetest");
             info.append("No events");
         }
