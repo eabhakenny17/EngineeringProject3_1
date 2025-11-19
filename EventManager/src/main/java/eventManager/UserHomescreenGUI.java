@@ -27,7 +27,8 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         userEvents = new ArrayList<>();
 
         for (Event e : allEvents) {
-            if (e.getUserId() == user.getId()) {
+            if (e.getUserId() == user.getId() || checkForId(e)) 
+            {
                 userEvents.add(e);
             }
         }
@@ -35,7 +36,9 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         listModel = new DefaultListModel<>();
         if (userEvents.isEmpty()) {
             listModel.addElement("No upcoming events found");
-        } else {
+        } 
+        else 
+        {
             for (Event e : userEvents) {
                 listModel.addElement(e.getEventName());
             }
@@ -124,7 +127,7 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         ArrayList<Event> allEvents = EventManager.getAllEvents();;
 
         for (Event e : allEvents) {
-            if (e.getUserId() == user.getId()) {
+            if (e.getUserId() == user.getId() || checkForId(e)) {
                 userEvents.add(e);
                 listModel.addElement(e.getEventName());
             }
@@ -135,6 +138,32 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         }
 
         System.out.println("Event list refreshed for " + user.getName());
+    }
+    
+    // Checks if the users id is saved in the id arrayList
+    public boolean checkForId(Event event)
+    {
+    	boolean idPresent = false;
+    	// Get the id list from event
+    	ArrayList<Integer> idList = event.getUser_array();
+    	
+    	if(idList != null)
+    	{
+    		for (Integer i : idList)
+        	{
+        		if(i.intValue() == user.getId())
+        		{
+        			idPresent = true;
+        		}
+        		
+        	}
+    	}
+    	else
+    	{
+    		System.out.println("ID list is null!");
+    	}
+    	
+    	return idPresent;
     }
 
 }
