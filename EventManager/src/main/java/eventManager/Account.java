@@ -1,5 +1,5 @@
 package eventManager;
-//REGULAR USER ACCOUNT
+//REGULAR USER ACCOUNT  
 import java.io.Serializable;
 
 public abstract class Account implements Serializable
