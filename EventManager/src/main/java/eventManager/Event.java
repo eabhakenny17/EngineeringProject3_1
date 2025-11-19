@@ -61,6 +61,34 @@ public class Event implements Serializable {
 
 	public ArrayList<Integer> getUser_array() {return userArray;}
 	public void setUser_array(ArrayList<Integer> user_array) {this.userArray = user_array;}
+	
+	 // Overiding equals method
+ 	@Override
+ 	public boolean equals(Object o)
+ 	{
+ 		boolean isEqual = false;
+ 		
+ 		if (o instanceof Event)
+ 		{
+ 			Event other = (Event)o;
+ 			System.out.println("Testing event " + this.getEventName() + " against " + other.getEventName());
+ 			if(this.getEventName().equals(other.getEventName()))
+ 			{
+ 				if (this.getMaxAttendance() == other.getMaxAttendance())
+ 				{
+ 					if (this.getBudget() == other.getBudget())
+ 					{
+ 						if (this.getVenue().equals(other.getVenue()))
+ 						{
+ 	 						isEqual = true;
+ 						}
+
+ 					}
+ 				}
+ 			}
+ 		}
+ 		return isEqual;
+ 	}
     
     
 }

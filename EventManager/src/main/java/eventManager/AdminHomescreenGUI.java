@@ -13,6 +13,7 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
     private JList<String> eventList;
     private JButton viewDetailsButton;
     private JButton createEventButton;
+    private JButton deleteEventButton;
 
     public AdminHomescreenGUI(AdminAccount admin) {
         this.admin = admin;
@@ -54,6 +55,10 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
         createEventButton = new JButton("Create Event");
         createEventButton.addActionListener(this);
         buttonPanel.add(createEventButton);
+        
+        deleteEventButton = new JButton("Delete Event");
+        deleteEventButton.addActionListener(this);
+        buttonPanel.add(deleteEventButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
 
@@ -83,6 +88,22 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
                     refreshEventList();
                 }
             });
+        }
+        
+        // If it is the delete button
+        if (e.getSource() == deleteEventButton)
+        {
+        	// Get the selected event
+        	int index = eventList.getSelectedIndex();
+            if (index == -1 || adminEvents.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please select a valid event!");
+            }
+
+            Event selectedEvent = adminEvents.get(index);
+            // and delete it
+            EventManager.removeEvent(selectedEvent);
+            
+            refreshEventList();
         }
     }
 

@@ -7,10 +7,27 @@ public class EventManager implements Serializable {
     private static final long serialVersionUID = 1L;
     private static ArrayList<Event> events = new ArrayList<>();
 
-    public static void addEvent(Event event) {
+    public static void addEvent(Event event) 
+    {
         loadEvents(); 
         events.add(event);
         saveEvents();
+    }
+    
+    public static void removeEvent(Event event)
+    {
+    	loadEvents();
+//    	System.out.println("Attempting to remove event...");
+    	
+    	for (int i = 0 ; i < events.size(); i++)
+    	{
+    		if (events.get(i).equals(event))
+    		{
+    			events.remove(i);
+    			System.out.println("Event Removed!");
+    		}
+    	}
+    	saveEvents();
     }
 
     public static ArrayList<Event> getAllEvents() {
@@ -47,4 +64,7 @@ public class EventManager implements Serializable {
             events = new ArrayList<>();
         }
     }
+    
+    
+
 }
