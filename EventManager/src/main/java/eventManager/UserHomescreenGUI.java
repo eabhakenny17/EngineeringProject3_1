@@ -12,7 +12,7 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
     private DefaultListModel<String> listModel;
     private JList<String> eventList;
     private JButton viewDetailsButton;
-    private JButton createEventButton;
+    //private JButton createEventButton;
 
     public UserHomescreenGUI(UserAccount user) {
         this.user = user;
@@ -51,9 +51,9 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         viewDetailsButton.addActionListener(this);
         buttonPanel.add(viewDetailsButton);
 
-        createEventButton = new JButton("Create Event");
-        createEventButton.addActionListener(this);
-        buttonPanel.add(createEventButton);
+//        createEventButton = new JButton("Create Event");
+//        createEventButton.addActionListener(this);
+//        buttonPanel.add(createEventButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
         
@@ -72,18 +72,21 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
             showEventDetails(selectedEvent);
         }
 
-        if (e.getSource() == createEventButton) {
-            EventCreation eventCreation = new EventCreation(user);
-            eventCreation.EventGUI();
-
-            // Refresh list after event window closes
-            eventCreation.getEventCreationWindow().addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent we) {
-                    refreshEventList();
-                }
-            });
-        }
+//        if (e.getSource() == createEventButton) 
+//        {
+//            EventCreation eventCreation = new EventCreation(user);
+//            eventCreation.EventGUI();
+//
+//            // Refresh list after event window closes
+//            eventCreation.getEventCreationWindow().addWindowListener(new WindowAdapter() 
+//            {
+//                @Override
+//                public void windowClosed(WindowEvent we) 
+//                {
+//                    refreshEventList();
+//                }
+//            });
+//        }
     }
 
     private void showEventDetails(Event event) {

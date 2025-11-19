@@ -28,6 +28,12 @@ public class EventCreation extends JFrame implements ActionListener {
 	//private JFrame startWindow = new JFrame();
 	//private JPanel startPanel = new JPanel();
 	//second window
+	
+	// List of all users
+	ArrayList<UserAccount> accountList = new ArrayList<UserAccount>();
+	private DefaultListModel<String> listModel = new DefaultListModel<String>();
+	private JList<String> userList;
+	
 	private JFrame eventCreationWindow = new JFrame();
 	private JPanel eventCreationPanel = new JPanel();
 	
@@ -38,7 +44,11 @@ public class EventCreation extends JFrame implements ActionListener {
 	private JLabel budgetLabel = new JLabel("Budget: "); private TextArea budgetTextArea = new TextArea();
 	private JLabel notesLabel = new JLabel("Notes: "); private TextArea notesTextArea = new TextArea();
 	
-	public void EventGUI() {
+	public void EventGUI() 
+	{
+		populateListModel();
+		userList = new JList<>(listModel);
+		
 		System.out.println("Calling GUI method from EventCreation");
 		
 		eventCreationWindow.getContentPane().add(eventCreationPanel);
@@ -51,6 +61,7 @@ public class EventCreation extends JFrame implements ActionListener {
 		eventCreationPanel.add(attendanceLabel); eventCreationPanel.add(attendanceTextArea);
 		eventCreationPanel.add(budgetLabel); eventCreationPanel.add(budgetTextArea);
 		eventCreationPanel.add(notesLabel); eventCreationPanel.add(notesTextArea);
+		eventCreationPanel.add(userList);
 		eventCreationPanel.add(saveEventBtn);
 		saveEventBtn.addActionListener(this);
 		
@@ -61,7 +72,8 @@ public class EventCreation extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
-	public JFrame getEventCreationWindow() {
+	public JFrame getEventCreationWindow() 
+	{
 	    return eventCreationWindow;
 	}
 	
@@ -78,9 +90,10 @@ public class EventCreation extends JFrame implements ActionListener {
 	                int maxAttendanceInt = Integer.parseInt(maxAttendanceTextArea.getText());
 	                int attendanceInt = Integer.parseInt(attendanceTextArea.getText());
 	                double budgetDouble = Double.parseDouble(budgetTextArea.getText());
-
+	                
+	                
 	                Event newEvent = new Event(eventNameTextArea.getText(), venueTextArea.getText(), 
-	                           maxAttendanceInt, attendanceInt, budgetDouble, notesTextArea.getText());
+	                           maxAttendanceInt, attendanceInt, budgetDouble, notesTextArea.getText(), saveUserIDs());
 	                
 	                if (userCreator != null)
 	                    newEvent.setUserId(userCreator.getId());
@@ -97,4 +110,30 @@ public class EventCreation extends JFrame implements ActionListener {
 			eventCreationWindow.dispose();
 		}
 	}	
+	
+	private void populateListModel()
+	{
+		accountList = UserAccount.getUserList();
+		
+		for (UserAccount user : accountList)
+		{
+			listModel.addElement(user.getName());
+		}
+	}
+	
+	private ArrayList<Integer> saveUserIDs()
+	{
+		// Get the list of indices that are selected
+		int[] selectedIndices = userList.getSelectedIndices();
+		ArrayList<Integer> usersWhoCanSeeEvent = new ArrayList<Integer>();
+		
+		// Populate the array list of IDs of users that can see the events
+		for (int i : selectedIndices)
+		{
+			usersWhoCanSeeEvent.add(accountList.get(i).getId());
+		}
+		
+		// Return the array list of ids
+		return usersWhoCanSeeEvent;
+	}
 }
