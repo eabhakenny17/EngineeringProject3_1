@@ -90,8 +90,6 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         JFrame frame = new JFrame(event.getEventName());
         frame.setSize(350, 300);
         frame.setLocationRelativeTo(this);
-        
-        ArrayList<Event> allEvents = Event.getCreatedEventsList();
 
         JTextArea area = new JTextArea();
         area.setEditable(false);
@@ -101,12 +99,13 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
 
         ArrayList<Event> allEvents = EventManager.getAllEvents();
         for (Event e : allEvents) {
-            if (e.getUserId() == userId) {
+            if (e.getUserId() == user.getId()) {
     	        info.append("Event: ").append(e.getEventName()).append("\nVenue: ").append(e.getVenue()).append("\nMax Attendance: ").append(e.getMaxAttendance()).append("\nCurrent Attendance: ").append(e.getAttendance()).append("\nBudget: $").append(e.getBudget()).append("\nNotes: ").append(e.getNotes()).append("\n----------------------------------------\n");
     	    }
         }
 
-        if (count == 0) {
+        if (info.length() == 0) {
+        	System.out.println("sonarqubetest");
             info.append("No events");
         }
 
@@ -119,7 +118,7 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         listModel.clear();
         userEvents.clear();
 
-        ArrayList<Event> allEvents = Event.getCreatedEventsList();
+        ArrayList<Event> allEvents = EventManager.getAllEvents();;
 
         for (Event e : allEvents) {
             if (e.getUserId() == user.getId()) {
