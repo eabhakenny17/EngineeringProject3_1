@@ -160,7 +160,6 @@ class UserAccountTest
 		UserAccount newAccount1 = new UserAccount("tim", "password", 0);
 		
 		newAccount1.print();
-		
 		assertTrue(true);
 	}
 	
