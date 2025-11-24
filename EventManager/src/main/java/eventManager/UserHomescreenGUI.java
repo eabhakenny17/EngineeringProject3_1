@@ -101,14 +101,14 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         area.setEditable(false);
         
         StringBuilder info = new StringBuilder();
-        int adminId = user.getId();
 
-        ArrayList<Event> allEvents = EventManager.getAllEvents();
-        for (Event e : allEvents) {
-            if (e.getUserId() == user.getId()) {
-    	        info.append("Event: ").append(e.getEventName()).append("\nVenue: ").append(e.getVenue()).append("\nMax Attendance: ").append(e.getMaxAttendance()).append("\nCurrent Attendance: ").append(e.getAttendance()).append("\nBudget: $").append(e.getBudget()).append("\nNotes: ").append(e.getNotes()).append("\n----------------------------------------\n");
-    	    }
-        }
+        // Get the selected event
+       	int index = getSelectedEventIndex();
+
+       Event selectedEvent = userEvents.get(index);
+
+       info.append("Event: ").append(selectedEvent.getEventName()).append("\nVenue: ").append(selectedEvent.getVenue()).append("\nMax Attendance: ").append(selectedEvent.getMaxAttendance())
+       .append("\nActual Attendance: ").append(selectedEvent.getAttendance()).append("\nBudget: $").append(selectedEvent.getBudget()).append("\nNotes: ").append(selectedEvent.getNotes());
 
         if (info.length() == 0) {
         	System.out.println("sonarqubetest");
@@ -166,4 +166,14 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
     	return idPresent;
     }
 
+    
+    private int getSelectedEventIndex()
+    {
+    	int index = eventList.getSelectedIndex();
+        if (index == -1 || userEvents.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select a valid event!");
+        }
+        
+        return index;
+    }
 }

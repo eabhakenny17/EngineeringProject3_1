@@ -94,10 +94,7 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
         if (e.getSource() == deleteEventButton)
         {
         	// Get the selected event
-        	int index = eventList.getSelectedIndex();
-            if (index == -1 || adminEvents.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please select a valid event!");
-            }
+        	int index = getSelectedEventIndex();
 
             Event selectedEvent = adminEvents.get(index);
             // and delete it
@@ -107,6 +104,16 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
         }
     }
 
+    private int getSelectedEventIndex()
+    {
+    	int index = eventList.getSelectedIndex();
+        if (index == -1 || adminEvents.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select a valid event!");
+        }
+        
+        return index;
+    }
+    
     private void showEventDetails(Event event) {
         JFrame frame = new JFrame(event.getEventName());
         frame.setSize(350, 300);
@@ -118,13 +125,15 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
         StringBuilder info = new StringBuilder();
         int adminId = admin.getAId();
 
-        ArrayList<Event> allEvents = EventManager.getAllEvents();
-        for (Event e : allEvents) {
-            if (e.getUserId() == adminId) {
-                info.append("Event: ").append(e.getEventName()).append("\nVenue: ").append(e.getVenue()).append("\nMax Attendance: ").append(e.getMaxAttendance())
-                .append("\nActual Attendance: ").append(e.getAttendance()).append("\nBudget: $").append(e.getBudget()).append("\nNotes: ").append(e.getNotes());
-            }
-        }
+     // Get the selected event
+    	int index = getSelectedEventIndex();
+
+        Event selectedEvent = adminEvents.get(index);
+ 
+        info.append("Event: ").append(selectedEvent.getEventName()).append("\nVenue: ").append(selectedEvent.getVenue()).append("\nMax Attendance: ").append(selectedEvent.getMaxAttendance())
+        .append("\nActual Attendance: ").append(selectedEvent.getAttendance()).append("\nBudget: $").append(selectedEvent.getBudget()).append("\nNotes: ").append(selectedEvent.getNotes());
+
+
 
         if (info.length() == 0) {
             info.append("(No events found for this admin)");
