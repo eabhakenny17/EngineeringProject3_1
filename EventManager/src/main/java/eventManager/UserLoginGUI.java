@@ -1,6 +1,7 @@
 package eventManager;
 
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,7 +38,8 @@ public class UserLoginGUI extends JFrame implements ActionListener
 	public UserLoginGUI() 
 	{
 		// Setup initial window
-		window.setLayout(flowLayout);
+        window.add(panel);
+        panel.setLayout(new GridLayout(1, 3));
 				
 		loginButton.addActionListener(this);
 		panel.add(nameLabel);

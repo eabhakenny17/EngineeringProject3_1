@@ -1,11 +1,14 @@
 package eventManager;
 
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import eventManager.UserHomescreenGUI;
+
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,15 +33,18 @@ public class AdminLoginGUI extends JFrame implements ActionListener
 	
 	JFrame window = new JFrame("Admin");
 	
-	FlowLayout flowLayout = new FlowLayout();
+	//FlowLayout flowLayout = new FlowLayout();
 	
 	private UserAccount loggedInUser; 
 	
 	public AdminLoginGUI() 
 	{
 		// Setup initial window
-		window.setLayout(flowLayout);
-				
+        //window.setSize(600, 600);
+        window.add(panel);
+        panel.setLayout(new GridLayout(1, 3));
+        
+		
 		loginButton.addActionListener(this);
 		panel.add(nameLabel);
 		panel.add(nameText);

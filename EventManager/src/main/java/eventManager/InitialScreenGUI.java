@@ -31,7 +31,7 @@ public class InitialScreenGUI extends JFrame implements ActionListener
 		panel.add(loginButton);
 		panel.add(registerButton);
 		panel.add(adminloginButton);
-		panel.add(deleteAllButton);
+		//panel.add(deleteAllButton);
 		
 		window.getContentPane().add(panel);
 		window.pack();
