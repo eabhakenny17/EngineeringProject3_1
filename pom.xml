@@ -5,7 +5,12 @@
 	<groupId>Corrundum</groupId>
 	<artifactId>EventManager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<dependencies>
+	
+	<properties>
+  		<sonar.organization>eabhakenny17</sonar.organization>
+	</properties>
+
+	<dependencies> 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -13,5 +18,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
 </project>

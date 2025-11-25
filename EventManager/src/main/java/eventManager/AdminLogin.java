@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class AdminLogin 
 {
 	// If login is valid returns the id, otherwise returns 0
-	public int attemptLogin(String name, String password)
+	public static int attemptLogin(String name, String password)
 	{
 		AllAdminAccounts adminList = new AllAdminAccounts();
 		ArrayList<AdminAccount> admins = adminList.getAdminAccountsList();

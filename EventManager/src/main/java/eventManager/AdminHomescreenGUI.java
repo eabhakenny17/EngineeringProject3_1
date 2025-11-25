@@ -13,6 +13,7 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
     private JList<String> eventList;
     private JButton viewDetailsButton;
     private JButton createEventButton;
+    private JButton deleteEventButton;
 
     public AdminHomescreenGUI(AdminAccount admin) {
         this.admin = admin;
@@ -54,6 +55,10 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
         createEventButton = new JButton("Create Event");
         createEventButton.addActionListener(this);
         buttonPanel.add(createEventButton);
+        
+        deleteEventButton = new JButton("Delete Event");
+        deleteEventButton.addActionListener(this);
+        buttonPanel.add(deleteEventButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
 
@@ -84,8 +89,31 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
                 }
             });
         }
+        
+        // If it is the delete button
+        if (e.getSource() == deleteEventButton)
+        {
+        	// Get the selected event
+        	int index = getSelectedEventIndex();
+
+            Event selectedEvent = adminEvents.get(index);
+            // and delete it
+            EventManager.removeEvent(selectedEvent);
+            
+            refreshEventList();
+        }
     }
 
+    private int getSelectedEventIndex()
+    {
+    	int index = eventList.getSelectedIndex();
+        if (index == -1 || adminEvents.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select a valid event!");
+        }
+        
+        return index;
+    }
+    
     private void showEventDetails(Event event) {
         JFrame frame = new JFrame(event.getEventName());
         frame.setSize(350, 300);
@@ -97,13 +125,15 @@ public class AdminHomescreenGUI extends JFrame implements ActionListener {
         StringBuilder info = new StringBuilder();
         int adminId = admin.getAId();
 
-        ArrayList<Event> allEvents = EventManager.getAllEvents();
-        for (Event e : allEvents) {
-            if (e.getUserId() == adminId) {
-                info.append("Event: ").append(e.getEventName()).append("\nVenue: ").append(e.getVenue()).append("\nMax Attendance: ").append(e.getMaxAttendance())
-                .append("\nActual Attendance: ").append(e.getAttendance()).append("\nBudget: $").append(e.getBudget()).append("\nNotes: ").append(e.getNotes());
-            }
-        }
+     // Get the selected event
+    	int index = getSelectedEventIndex();
+
+        Event selectedEvent = adminEvents.get(index);
+ 
+        info.append("Event: ").append(selectedEvent.getEventName()).append("\nVenue: ").append(selectedEvent.getVenue()).append("\nMax Attendance: ").append(selectedEvent.getMaxAttendance())
+        .append("\nActual Attendance: ").append(selectedEvent.getAttendance()).append("\nBudget: $").append(selectedEvent.getBudget()).append("\nNotes: ").append(selectedEvent.getNotes());
+
+
 
         if (info.length() == 0) {
             info.append("(No events found for this admin)");

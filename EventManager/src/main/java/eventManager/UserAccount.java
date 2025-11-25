@@ -24,6 +24,8 @@ public class UserAccount extends Account implements Serializable
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 	
+	
+	
 	public static boolean verifyValidUsername(String name)
 	{
 		// Check if name is valid

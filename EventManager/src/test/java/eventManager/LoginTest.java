@@ -52,5 +52,4 @@ class LoginTest {
 		
 		assertEquals(testUser, newAccount);
 	}
-
 }

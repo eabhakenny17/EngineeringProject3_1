@@ -12,7 +12,7 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
     private DefaultListModel<String> listModel;
     private JList<String> eventList;
     private JButton viewDetailsButton;
-    private JButton createEventButton;
+    //private JButton createEventButton;
 
     public UserHomescreenGUI(UserAccount user) {
         this.user = user;
@@ -27,7 +27,8 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         userEvents = new ArrayList<>();
 
         for (Event e : allEvents) {
-            if (e.getUserId() == user.getId()) {
+            if (e.getUserId() == user.getId() || checkForId(e)) 
+            {
                 userEvents.add(e);
             }
         }
@@ -35,7 +36,9 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         listModel = new DefaultListModel<>();
         if (userEvents.isEmpty()) {
             listModel.addElement("No upcoming events found");
-        } else {
+        } 
+        else 
+        {
             for (Event e : userEvents) {
                 listModel.addElement(e.getEventName());
             }
@@ -51,9 +54,9 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         viewDetailsButton.addActionListener(this);
         buttonPanel.add(viewDetailsButton);
 
-        createEventButton = new JButton("Create Event");
-        createEventButton.addActionListener(this);
-        buttonPanel.add(createEventButton);
+//        createEventButton = new JButton("Create Event");
+//        createEventButton.addActionListener(this);
+//        buttonPanel.add(createEventButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
         
@@ -72,41 +75,43 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
             showEventDetails(selectedEvent);
         }
 
-        if (e.getSource() == createEventButton) {
-            EventCreation eventCreation = new EventCreation(user);
-            eventCreation.EventGUI();
-
-            // Refresh list after event window closes
-            eventCreation.getEventCreationWindow().addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent we) {
-                    refreshEventList();
-                }
-            });
-        }
+//        if (e.getSource() == createEventButton) 
+//        {
+//            EventCreation eventCreation = new EventCreation(user);
+//            eventCreation.EventGUI();
+//
+//            // Refresh list after event window closes
+//            eventCreation.getEventCreationWindow().addWindowListener(new WindowAdapter() 
+//            {
+//                @Override
+//                public void windowClosed(WindowEvent we) 
+//                {
+//                    refreshEventList();
+//                }
+//            });
+//        }
     }
 
     private void showEventDetails(Event event) {
         JFrame frame = new JFrame(event.getEventName());
         frame.setSize(350, 300);
         frame.setLocationRelativeTo(this);
-        
-        ArrayList<Event> allEvents = Event.getCreatedEventsList();
 
         JTextArea area = new JTextArea();
         area.setEditable(false);
         
         StringBuilder info = new StringBuilder();
-        int adminId = user.getId();
 
-        ArrayList<Event> allEvents = EventManager.getAllEvents();
-        for (Event e : allEvents) {
-            if (e.getUserId() == userId) {
-    	        info.append("Event: ").append(e.getEventName()).append("\nVenue: ").append(e.getVenue()).append("\nMax Attendance: ").append(e.getMaxAttendance()).append("\nCurrent Attendance: ").append(e.getAttendance()).append("\nBudget: $").append(e.getBudget()).append("\nNotes: ").append(e.getNotes()).append("\n----------------------------------------\n");
-    	    }
-        }
+        // Get the selected event
+       	int index = getSelectedEventIndex();
 
-        if (count == 0) {
+       Event selectedEvent = userEvents.get(index);
+
+       info.append("Event: ").append(selectedEvent.getEventName()).append("\nVenue: ").append(selectedEvent.getVenue()).append("\nMax Attendance: ").append(selectedEvent.getMaxAttendance())
+       .append("\nActual Attendance: ").append(selectedEvent.getAttendance()).append("\nBudget: $").append(selectedEvent.getBudget()).append("\nNotes: ").append(selectedEvent.getNotes());
+
+        if (info.length() == 0) {
+        	System.out.println("sonarqubetest");
             info.append("No events");
         }
 
@@ -119,10 +124,10 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
         listModel.clear();
         userEvents.clear();
 
-        ArrayList<Event> allEvents = Event.getCreatedEventsList();
+        ArrayList<Event> allEvents = EventManager.getAllEvents();;
 
         for (Event e : allEvents) {
-            if (e.getUserId() == user.getId()) {
+            if (e.getUserId() == user.getId() || checkForId(e)) {
                 userEvents.add(e);
                 listModel.addElement(e.getEventName());
             }
@@ -134,5 +139,41 @@ public class UserHomescreenGUI extends JFrame implements ActionListener {
 
         System.out.println("Event list refreshed for " + user.getName());
     }
+    
+    // Checks if the users id is saved in the id arrayList
+    public boolean checkForId(Event event)
+    {
+    	boolean idPresent = false;
+    	// Get the id list from event
+    	ArrayList<Integer> idList = event.getUser_array();
+    	
+    	if(idList != null)
+    	{
+    		for (Integer i : idList)
+        	{
+        		if(i.intValue() == user.getId())
+        		{
+        			idPresent = true;
+        		}
+        		
+        	}
+    	}
+    	else
+    	{
+    		System.out.println("ID list is null!");
+    	}
+    	
+    	return idPresent;
+    }
 
+    
+    private int getSelectedEventIndex()
+    {
+    	int index = eventList.getSelectedIndex();
+        if (index == -1 || userEvents.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select a valid event!");
+        }
+        
+        return index;
+    }
 }

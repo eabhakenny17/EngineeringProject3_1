@@ -1,6 +1,7 @@
 package eventManager;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Event implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -11,16 +12,30 @@ public class Event implements Serializable {
     private int attendance;
     private double budget;
     private String notes;
+    // Id of the admin who made this event
     private int user_id;
+    
+    // Stores all users that should be able to see the array
+    private ArrayList<Integer> userArray = new ArrayList<Integer>();
 
-    public Event(String eventName, String venue, int maxAttendance, int attendance, double budget, String notes) {
+    public Event(String eventName, String venue, int maxAttendance, int attendance, double budget, String notes, ArrayList<Integer> userArray) {
         this.eventName = eventName;
         this.venue = venue;
         this.maxAttendance = maxAttendance;
         this.attendance = attendance;
         this.budget = budget;
         this.notes = notes;
+        this.userArray = userArray;
     }
+    
+//    public Event(String eventName, String venue, int maxAttendance, int attendance, double budget, String notes) {
+//        this.eventName = eventName;
+//        this.venue = venue;
+//        this.maxAttendance = maxAttendance;
+//        this.attendance = attendance;
+//        this.budget = budget;
+//        this.notes = notes;
+//    }
 
     // Getters and setters
     public String getEventName() { return eventName; }
@@ -43,4 +58,37 @@ public class Event implements Serializable {
 
     public int getUserId() { return user_id; }
     public void setUserId(int user_id) { this.user_id = user_id; }
+
+	public ArrayList<Integer> getUser_array() {return userArray;}
+	public void setUser_array(ArrayList<Integer> user_array) {this.userArray = user_array;}
+	
+	 // Overiding equals method
+ 	@Override
+ 	public boolean equals(Object o)
+ 	{
+ 		boolean isEqual = false;
+ 		
+ 		if (o instanceof Event)
+ 		{
+ 			Event other = (Event)o;
+ 			System.out.println("Testing event " + this.getEventName() + " against " + other.getEventName());
+ 			if(this.getEventName().equals(other.getEventName()))
+ 			{
+ 				if (this.getMaxAttendance() == other.getMaxAttendance())
+ 				{
+ 					if (this.getBudget() == other.getBudget())
+ 					{
+ 						if (this.getVenue().equals(other.getVenue()))
+ 						{
+ 	 						isEqual = true;
+ 						}
+
+ 					}
+ 				}
+ 			}
+ 		}
+ 		return isEqual;
+ 	}
+    
+    
 }
