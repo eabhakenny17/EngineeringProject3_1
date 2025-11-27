@@ -1,195 +1,192 @@
 package eventManager;
 
+import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+
 public class EventTest {
-	void getEventNameTest001() {
+	void getEventName001test() {
 		//test 001
 		//test to get event name
 		//event name = "Birthday Party"
 		//outcome: correctly returns event name
-		assertEquals("Birthday Party", "Birthday Party");
+		
+		Event testEvent = new Event("Birthday Party","Test" , 100 , 10 , 100.00 , "Notes", null );
+		
+		assertEquals("Birthday Party", testEvent.getEventName());
 	}
 	
-	void getEventNameTest002() {
+	
+	void setEventName002test() {
 		//test 002
-		//test to not get event name
-		//event name = ""
-		//outcome: does not return a name
-		assertEquals("", "");
-	}
-	
-	void setEventNameTest001() {
-		//test 003
 		//test to set event name
-		//event name = "Birthday Party"
+		//event name = "Not Birthday Party" newName = "Birthday Party
 		//outcome: sets event name as "Birthday Party"
-		assertEquals("Birthday Party");
+		
+		Event testEvent = new Event("Not Birthday Party","Test" , 100 , 10 , 100.00 , "Notes", null );
+		String newName = "BirthdayParty";
+		
+		testEvent.setEventName(newName);
+		assertEquals("Birthday Party", testEvent.getEventName());
 	}
 	
-	void getEventVenueTest001() {
-		//test 004
+	void getEventVenue003test() {
+		//test 003
 		//test to get event venue
-		//event name = "X207"
+		//venue = "Test" 
 		//outcome: correctly returns event venue
-		assertEquals("X207", "X207");
+		Event testEvent = new Event("Birthday Party","Test" , 100 , 10 , 100.00 , "Notes", null );
+		
+		assertEquals("Test", testEvent.getVenue());
 	}
 	
-	void getEventVenueTest002() {
-		//test 005
-		//test to not get event venue
-		//event name = ""
-		//outcome: does not return a venue
-		assertEquals("", "");
-	}
-	
-	void setEventVenueTest001() {
-		//test 006
+	void setEventVenue004test() {
+		//test 004
 		//test to set event venue
-		//event name = "X207"
-		//outcome: sets event name as "X207"
-		assertEquals("X207");
+		//event venue = "Wrong Venue", newVenue = "Test"
+		//outcome: sets event Venue as "Test"
+		Event testEvent = new Event("Birthday Party","Wrong Venue" , 100 , 10 , 100.00 , "Notes", null );
+		String newVenue = "Test";
+		
+		testEvent.setVenue(newVenue);
+		
+		assertEquals("Test", testEvent.getVenue());
 	}
 	
-	void getEventMaxAttTest001() {
-		//test 007
+	void getMaxAttendance005test() {
+		//test 005
 		//test to get max attendance
 		//max attendance = 50
 		//outcome: correctly returns max attendance
-		assertEquals(50, 50);
+		
+		Event testEvent = new Event("Birthday Party","Wrong Venue" , 50 , 10 , 100.00 , "Notes", null );
+		assertEquals(50, testEvent.getMaxAttendance());
 	}
 	
-	void getEventMaxAttTest002() {
-		//test 008
-		//test to not get max attendance
-		//max attendance = 
-		//outcome: does not return max attendance
-		assertEquals(,);
-	}
 	
-	void setEventMaxAttTest001() {
-		//test 009
+	void setEventMaxAttendance006test() {
+		//test 006
 		//test to set max attendance
-		//max attendance = 50
+		//max attendance = 25, newMax = 50
 		//outcome: sets max attendance at 50
-		assertEquals("X207");
+		Event testEvent = new Event("Birthday Party","Wrong Venue" , 25 , 10 , 100.00 , "Notes", null );
+		int newMax = 50;
+		
+		testEvent.setMaxAttendance(newMax);
+		
+		assertEquals(25, testEvent.getMaxAttendance());
 	}
 
-	void getEventAttTest001() {
-		//test 010
+	void getEventAttendance007test() {
+		//test 007
 		//test to get attendance
-		//attendance = 47
+		//attendance = 10
 		//outcome: correctly returns attendance
-		assertEquals(47, 47);
+		
+		Event testEvent = new Event("Birthday Party","Wrong Venue" , 25 , 10 , 100.00 , "Notes", null );
+		
+		assertEquals(10, testEvent.getAttendance());
 	}
 	
-	void getEventAttTest002() {
-		//test 011
-		//test to not get attendance
-		//attendance = 
-		//outcome: does not return attendance
-		assertEquals(,);
-	}
 	
-	void setEventMaxAttTest001() {
-		//test 012
+	void setEventAttendance008test() {
+		//test 008
 		//test to set attendance
-		//attendance = 47
-		//outcome: sets attendance at 47
-		assertEquals(47);
+		//attendance = 5, newAttendance = 10
+		//outcome: sets attendance at 10
+		
+		Event testEvent = new Event("Birthday Party","Wrong Venue" , 25 , 5 , 100.00 , "Notes", null );
+		int newAttendance = 10;
+		
+		testEvent.setAttendance(newAttendance);
+		
+		assertEquals(10, testEvent.getAttendance());
 	}
 	
-	void getEventBudget001() {
-		//test 013
+	void getEventBudget009test() {
+		//test 009
 		//test to get budget
-		//budget = 500.50
+		//double budget = 500.50
 		//outcome: correctly returns budget
-		assertEquals(500.50, 500.50);
+		
+		Event testEvent = new Event("Birthday Party","Wrong Venue" , 25 , 5 , 500.50 , "Notes", null );
+		
+		assertEquals(500.50, testEvent.getBudget());
 	}
 	
-	void getEventBudgetTest002() {
-		//test 014
-		//test to not get budget
-		//budget = 
-		//outcome: does not return budget
-		assertEquals(,);
-	}
 	
-	void setEventBudgetTest001() {
-		//test 015
+	void setEventBudgetTest010() {
+		//test 010
 		//test to set budget
-		//budget = 500.50
+		//double budget = 100.50, newBudget = 500.50
 		//outcome: sets budget at 500.50
-		assertEquals(500.50);
+		Event testEvent = new Event("Birthday Party","Wrong Venue" , 25 , 5 , 100.50 , "Notes", null );
+		double newBudget = 500.50;
+		
+		testEvent.setBudget(newBudget);
+		
+		assertEquals(500.50, testEvent.getBudget());
 	}
 
-	void getEventNotes001() {
-		//test 016
+	void getEventNotes011test() {
+		//test 011
 		//test to get notes
-		//notes = "Gluten-free"
+		//notes = "Notes"
 		//outcome: correctly returns notes
-		assertEquals("Gluten-free", "Gluten-free");
+		
+		Event testEvent = new Event("Birthday Party","Wrong Venue" , 25 , 5 , 100.50 , "Notes", null );
+		
+		assertEquals("Notes", testEvent.getNotes());
 	}
 	
-	void getEventBudgetTest002() {
-		//test 017
-		//test to not get notes
-		//notes = 
-		//outcome: does not return notes
-		assertEquals(,);
-	}
-	
-	void setEventBudgetTest001() {
-		//test 018
+	void setEventBudget012test() {
+		//test 012
 		//test to get notes
-		//notes = "Gluten-free"
+		//notes = "not note", newNote = "Notes"
 		//outcome: correctly sets notes
-		assertEquals("Gluten-free");
+		
+		Event testEvent = new Event("Birthday Party","Wrong Venue" , 25 , 5 , 100.50 , "not note", null );
+		String newNote = "Notes";
+		
+		testEvent.setNotes(newNote);
+		
+		assertEquals("Notes", testEvent.getNotes());
 	}
 	
-	void getUserID001() {
-		//test 019
+	void getUserArray013test() {
+		//test 013
 		//test to get UserID
-		//UserID = 2
+		//UserArray = new ArrayList<Integer> {1,2}
 		//outcome: correctly returns UserID
-		assertEquals(2, 2);
+		
+		ArrayList<Integer> intArrayList = new ArrayList<Integer>();
+		intArrayList.add(1);
+		intArrayList.add(2);
+		
+		Event testEvent = new Event("Birthday Party","Wrong Venue" , 25 , 5 , 100.50 , "Notes", intArrayList );
+		
+		assertEquals(intArrayList, testEvent.getUser_array());
 	}
 	
-	void getUserIDTest002() {
-		//test 020
-		//test to not get UserID
-		//notes = 
-		//outcome: does not return UserID
-		assertEquals(,);
-	}
-	
-	void setUserIDTest001() {
-		//test 021
+	void setUserArray014test() {
+		//test 014
 		//test to get UserID
-		//UserID = 2
-		//outcome: correctly sets UserID
-		assertEquals(UserID);
+		//badArray = new ArrayList<Integer> {1,1}, goodArray = new ArrayList<Integer> {1,2}
+		//outcome: correctly returns UserID
+		
+		ArrayList<Integer> badArray = new ArrayList<Integer>();
+		badArray.add(1);
+		badArray.add(1);
+		
+		ArrayList<Integer> goodArray = new ArrayList<Integer>();
+		goodArray.add(1);
+		goodArray.add(2);
+		
+		Event testEvent = new Event("Birthday Party","Wrong Venue" , 25 , 5 , 100.50 , "Notes", badArray);
+		testEvent.setUser_array(goodArray);
+		
+		assertEquals(goodArray, testEvent.getUser_array());
 	}
 	
-	void getUserID001() {
-		//test 019
-		//test to get User_array
-		//User_array = {0,1,2}
-		//outcome: correctly returns User_array
-		assertEquals(3, {0,1,2});
-	}
-	
-	void getUserIDTest002() {
-		//test 020
-		//test to not get User_array
-		//getUser_array = 
-		//outcome: does not return getUser_array
-		assertEquals(,);
-	}
-	
-	void setUser_arrayTest001() {
-		//test 024
-		//test to set User_array
-		//getUser_array = {0,1,2}
-		//outcome: correctly sets getUser_array
-		assertEquals(3, {0,1,2});
-	}
+
 }
